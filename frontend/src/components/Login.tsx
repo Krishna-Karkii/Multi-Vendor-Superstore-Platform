@@ -17,6 +17,7 @@ export default function Login({}) {
         }
         else {
             setStatus('submitting');
+            setError('');
             setTimeout( () => {setStatus('success');}, 2000);
             setTimeout( () => {setStatus('idle'); setPassword('')}, 4000);
         }
