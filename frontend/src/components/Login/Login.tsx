@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import PasswordInput from './PasswordInput';
+import React, { useState } from 'react';
+import Input from './Input';
 
 export default function Login({}) {
 
@@ -30,18 +30,19 @@ export default function Login({}) {
       <div>
         <form id='form' onSubmit={handleSubmit}>
             <label>Email: </label>
-            <input
+            <Input
             id="email"
-            type='email'
+            type="email"
             value={email}
-            onChange={(event) => {
-                setEmail(event.target.value);
-            }}/>
+            setValue={setEmail}
+            />
             <br />
             <label>Password: </label>
-            <PasswordInput
-            password={password}
-            setPassword={setPassword}
+            <Input
+            id="password"
+            type="password"
+            value={password}
+            setValue={setPassword}
             />
             <br />
             <button id="button">Submit</button>
