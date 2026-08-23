@@ -6,19 +6,24 @@ export default function Login({}) {
     const [status, setStatus] = useState('idle');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({email: '', password: ''});
     
     async function handleSubmit(event) {
         event.preventDefault();
-        if (email === ''){
-            setError('email');
-        }
-        else if (password === ''){
-            setError('password');
+        if (email === '' || password === '') {
+            if (email === '' && password === ''){
+                setErrors({email: 'Please Enter Email!', password: 'Please Enter Password!'});
+            }
+            else if (email === ''){
+                setErrors({password: '', email: 'Please Enter Email!'});
+            }
+            else{
+                setErrors({email: '', password: 'Please Enter Password!'});
+            }
         }
         else {
             setStatus('submitting');
-            setError('');
+            setErrors({email: '', password: ''});
             setTimeout( () => {setStatus('success');}, 2000);
             setTimeout( () => {setStatus('idle'); setPassword('')}, 4000);
         }
@@ -63,65 +68,16 @@ export default function Login({}) {
             </p>
         }
         {
-            error === 'email'  && <p>
-                Error: Please enter email
+            errors.email && <p>
+                {errors.email}
             </p>
         }
         {
-            error === 'password' && <p>
-                Error : Please Enter Password
+            errors.password && <p>
+                {errors.password}
             </p>
         }
       </div>
     </div>
   );
 }
-
-// export function Login({}) {
-
-//     const [status, setStatus] = useState('idle');
-//     const [email, setEmail] = useState('');
-    
-//     async function handleSubmit(event) {
-//         event.preventDefault();
-//         setStatus('submitting');
-//         setTimeout( () => {setStatus('success');}, 2000);
-//         setTimeout( () => {setStatus('idle');}, 4000);
-//     }
-//   return (
-//     <div>
-//       <h1>Login</h1>
-//       <div>
-//         <form id='form' onSubmit={handleSubmit}>
-//             <label id="name">Name: </label>
-//             <input type="text" id='Name'/>
-//             <br />
-//             <label id="email">Email: </label>
-//             <input 
-//             type='email'
-//             value={email}
-//             onChange={(event) => {
-//                 setEmail(event.target.value);
-//             }}/>
-//             <br />
-//             <button id="button">Click me</button>
-//         </form>
-//         {
-//             status === 'idle' && <p>
-//                 Status: Ready
-//             </p>
-//         }
-//         {
-//             status === 'success' && <p>
-//                 Status: Signed in!
-//             </p>
-//         }
-//         {
-//             status === 'submitting' && <p>
-//                 Status: Signing in...
-//             </p>
-//         }
-//       </div>
-//     </div>
-//   );
-// }
