@@ -7,26 +7,47 @@ export default function Login({}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({email: '', password: ''});
+
+    function validate(email, password) {
+        if (email !== '' && password !== ''){
+            return {
+            email: '',
+            password: ''
+            };
+        }
+        else if (email === '' && password === ''){
+                return {
+                    email: 'Please Enter Email!', 
+                    password: 'Please Enter Password!'
+                };
+            }
+        else if (email === ''){
+            return {
+                email: 'Please Enter Email!', 
+                password: ''
+            };
+        }
+        else{
+            return {
+                email: '', 
+                password: 'Please Enter Password!'
+            };
+        }
+        
+    }
     
     async function handleSubmit(event) {
         event.preventDefault();
-        if (email === '' || password === '') {
-            if (email === '' && password === ''){
-                setErrors({email: 'Please Enter Email!', password: 'Please Enter Password!'});
-            }
-            else if (email === ''){
-                setErrors({password: '', email: 'Please Enter Email!'});
-            }
-            else{
-                setErrors({email: '', password: 'Please Enter Password!'});
-            }
+        const validation = validate(email, password);
+        if (validation !== null){
+            setErrors(validation);
+            return;
         }
-        else {
-            setStatus('submitting');
-            setErrors({email: '', password: ''});
-            setTimeout( () => {setStatus('success');}, 2000);
-            setTimeout( () => {setStatus('idle'); setPassword('')}, 4000);
-        }
+        setStatus('submitting');
+        setErrors({email: '', password: ''});
+        setTimeout( () => {setStatus('success');}, 2000);
+        setTimeout( () => {setStatus('idle'); setPassword('')}, 4000);
+    
     }
 
   return (
