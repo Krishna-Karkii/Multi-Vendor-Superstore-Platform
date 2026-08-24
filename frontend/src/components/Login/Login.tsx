@@ -39,15 +39,42 @@ export default function Login({}) {
     async function handleSubmit(event) {
         event.preventDefault();
         const validation = validate(email, password);
-        if (validation !== null){
+        if (validation.email !== '' || validation.password !== ''){
             setErrors(validation);
             return;
         }
         setStatus('submitting');
         setErrors({email: '', password: ''});
-        setTimeout( () => {setStatus('success');}, 2000);
-        setTimeout( () => {setStatus('idle'); setPassword('')}, 4000);
-    
+        
+        try {
+            const response = await fetch("http://127.0.0.1:8000/auth/login", {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        email: email,
+                        password: password
+                    }
+                ),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok){
+                throw new Error(data.detail || 'Login Failed!');
+            }
+            
+            console.log(data);
+
+            setStatus('success');
+            setPassword('');
+
+        } catch (error) {
+            console.error(error);
+            setStatus('idle');
+        }
     }
 
   return (
