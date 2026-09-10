@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from contextlib import asynccontextmanager
 
 from database import get_connection_pool, get_user_by_email, get_connection
@@ -16,7 +16,6 @@ async def lifespan(app: FastAPI):
     app.state.db_pool = await get_connection_pool()
     yield
     if app.state.db_pool:
-
         await app.state.db_pool.close()
 
 
@@ -34,7 +33,7 @@ app.add_middleware(
 )
 
 class LoginRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
