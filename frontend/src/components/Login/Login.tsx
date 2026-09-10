@@ -82,49 +82,31 @@ export default function Login({}) {
       <h1>Login</h1>
       <div>
         <form id='form' onSubmit={handleSubmit}>
-            <label>Email: </label>
             <Input
             id="email"
+            label="Email Address"
             type="email"
             value={email}
-            setValue={setEmail}
+            onChange={(e) => setEmail(e.target.value)}
+            error={errors.email}
             />
             <br />
-            <label>Password: </label>
             <Input
             id="password"
+            label="Password"
             type="password"
             value={password}
-            setValue={setPassword}
+            onChange={(e) => setPassword(e.target.value)}
+            error={errors.password}
             />
             <br />
-            <button id="button">Submit</button>
+            <button 
+            id="button"
+            disabled={status==='submitting'}>{
+            status === 'idle' && 'Submit' 
+            || status === 'submitting' && 'Signing in...'
+            || status === 'success' && 'Signed in!'}</button>
         </form>
-        {
-            status === 'idle' && <p>
-                Status: Ready
-            </p>
-        }
-        {
-            status === 'success' && <p>
-                Status: Signed in!
-            </p>
-        }
-        {
-            status === 'submitting' && <p>
-                Status: Signing in...
-            </p>
-        }
-        {
-            errors.email && <p>
-                {errors.email}
-            </p>
-        }
-        {
-            errors.password && <p>
-                {errors.password}
-            </p>
-        }
       </div>
     </div>
   );
