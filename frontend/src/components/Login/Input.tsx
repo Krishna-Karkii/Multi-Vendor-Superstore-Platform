@@ -10,6 +10,5 @@ return (
     />
     {error && <span className="text-xs text-red-500" style={{color: 'red'}}>{error}</span>}
     </div>
-
 )
 }

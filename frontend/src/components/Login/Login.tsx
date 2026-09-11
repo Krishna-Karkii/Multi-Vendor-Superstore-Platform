@@ -4,42 +4,32 @@ import Input from './Input';
 export default function Login({}) {
 
     const [status, setStatus] = useState('idle');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
     const [errors, setErrors] = useState({email: '', password: ''});
+    const [serverError, setServerError] = useState('');
 
-    function validate(email, password) {
-        if (email !== '' && password !== ''){
-            return {
+    function validate(data) {
+        const newErrors = {
             email: '',
             password: ''
-            };
+        };
+        // Validation Logic
+        if (!data.email){
+            newErrors.email = 'Please Enter the email!';
         }
-        else if (email === '' && password === ''){
-                return {
-                    email: 'Please Enter Email!', 
-                    password: 'Please Enter Password!'
-                };
-            }
-        else if (email === ''){
-            return {
-                email: 'Please Enter Email!', 
-                password: ''
-            };
+        if (!data.password){
+            newErrors.password = 'Please Enter the Password!'
         }
-        else{
-            return {
-                email: '', 
-                password: 'Please Enter Password!'
-            };
-        }
-        
+        return newErrors;
     }
     
     async function handleSubmit(event) {
         event.preventDefault();
-        const validation = validate(email, password);
-        if (validation.email !== '' || validation.password !== ''){
+        const validation = validate(formData);
+        if (validation.email || validation.password){
             setErrors(validation);
             return;
         }
@@ -54,8 +44,8 @@ export default function Login({}) {
                 },
                 body: JSON.stringify(
                     {
-                        email: email,
-                        password: password
+                        email: formData.email,
+                        password: formData.password
                     }
                 ),
             });
@@ -69,7 +59,10 @@ export default function Login({}) {
             console.log(data);
 
             setStatus('success');
-            setPassword('');
+            setFormData({
+                ...formData,
+                password: ''
+            });
 
         } catch (error) {
             console.error(error);
@@ -86,8 +79,10 @@ export default function Login({}) {
             id="email"
             label="Email Address"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={(e) => setFormData({
+                ...formData,
+                email: e.target.value,})}
             error={errors.email}
             />
             <br />
@@ -95,8 +90,10 @@ export default function Login({}) {
             id="password"
             label="Password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={(e) => setFormData({
+                ...formData,
+                password: e.target.value,})}
             error={errors.password}
             />
             <br />
