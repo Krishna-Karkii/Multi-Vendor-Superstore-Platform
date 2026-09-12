@@ -52,21 +52,40 @@ export default function Login({}) {
 
             const data = await response.json();
 
-            if (!response.ok){
-                throw new Error(data.detail || 'Login Failed!');
+            setServerError('');
+
+            if (response.ok === false){
+                if (response.status === 401){
+                    setServerError('Invalid Email or Password!');
+                }
+                else {
+                    setServerError('Something went wrong. Please try again.');
+                }
+                setStatus('idle');
+                setFormData({
+                    email: '',
+                    password: ''
+                }
+                );
+                return;
             }
             
             console.log(data);
 
             setStatus('success');
+            setServerError('');
             setFormData({
                 ...formData,
                 password: ''
             });
+            console.log(serverError);
+            console.log(formData);
+
 
         } catch (error) {
-            console.error(error);
+            setServerError('Unable to connect to the server!');
             setStatus('idle');
+            console.log(serverError);
         }
     }
 
