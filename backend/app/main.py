@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from contextlib import asynccontextmanager
@@ -50,6 +50,7 @@ async def login(
     conn = Depends(get_connection)
     ):
     user = await get_user_by_email(conn, data.email)
+    logger.info(user)
 
     if user:
         return {
@@ -57,7 +58,4 @@ async def login(
             "email": data.email
         }
     else:
-        return {
-            "message": "validation Unsuccessfull",
-            "email": data.email
-        }
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
