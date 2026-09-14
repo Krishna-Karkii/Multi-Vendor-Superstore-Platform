@@ -15,10 +15,11 @@ async def get_connection_pool():
 
 async def get_user_by_email(
         connnection: asyncpg.Connection,
-        email: str
+        email: str,
+        password: str
 ):
-    return await connnection.fetchrow("Select * from users where email = $1",
-                               email)
+    return await connnection.fetchrow("Select * from users where email = $1 and password_hash = $2",
+                               email, password)
 
 async def get_connection(request: Request):
     async with request.app.state.db_pool.acquire() as conn:

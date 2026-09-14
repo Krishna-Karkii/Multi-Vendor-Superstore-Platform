@@ -49,7 +49,7 @@ async def login(
     data: LoginRequest, 
     conn = Depends(get_connection)
     ):
-    user = await get_user_by_email(conn, data.email)
+    user = await get_user_by_email(conn, data.email, data.password)
     logger.info(user)
 
     if user:
