@@ -1,5 +1,6 @@
 fastapi
-pydantic
 uvicorn
 python-dotenv
+pydantic[email]
 asyncpg
+argon2-cffi
