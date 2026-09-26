@@ -6,7 +6,7 @@ export default function LandingPage() {
     <div>
       <header>
         <nav>
-          <h2>OmniMarket</h2>
+          <h2>SuperStore</h2>
           <div>
             <Link to="/login">
               <button>Login</button>

@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../ui/Input';
 
+interface LoginFormData{
+    email: string;
+    password: string;
+}
+
+interface LoginFormErrors{
+    email: string;
+    password: string;
+}
+
 export default function Login({}) {
 
     const [status, setStatus] = useState('idle');
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<LoginFormData>({
         email: '',
         password: ''
     });
-    const [errors, setErrors] = useState({email: '', password: ''});
+    const [errors, setErrors] = useState<LoginFormErrors>({email: '', password: ''});
     const [serverError, setServerError] = useState('');
     // tracing how the state changes
     useEffect(() => {
@@ -25,7 +35,7 @@ export default function Login({}) {
             }));
         }
         
-    function validate(data) {
+    function validate(data: LoginFormData) {
         const newErrors = {
             email: '',
             password: ''
@@ -37,7 +47,7 @@ export default function Login({}) {
         return newErrors;
     }
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: React.ChangeEvent<HTMLButtonElement>) {
         event.preventDefault();
         const validation = validate(formData);
         if (validation.email || validation.password){

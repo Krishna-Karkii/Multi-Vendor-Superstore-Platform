@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../ui/Input';
 
+interface SignupFormData{
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+interface SignupFormErrors{
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
 export default function Signup({}) {
 
     const [status, setStatus] = useState('idle');
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<SignupFormData>({
         email: '',
         password: '',
         confirmPassword: ''
     });
-    const [errors, setErrors] = useState({email: '', password: '', confirmPassword: ''});
+    const [errors, setErrors] = useState<SignupFormErrors>({email: '', password: '', confirmPassword: ''});
     const [serverError, setServerError] = useState('');
     // tracing how the state changes
     useEffect(() => {
@@ -27,7 +39,7 @@ export default function Signup({}) {
         }));
     }
 
-    function validate(data) {
+    function validate(data: SignupFormData) {
         const newErrors = {
             email: '',
             password: '',
@@ -43,10 +55,10 @@ export default function Signup({}) {
         return newErrors;
     }
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: React.ChangeEvent<HTMLButtonElement>) {
         event.preventDefault();
         const validation = validate(formData);
-        if (validation.email || validation.password || validation.confirmPassword || validation.checkPassword ){
+        if (validation.email || validation.password || validation.confirmPassword){
             setErrors(validation);
             return;
         }
