@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-do
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import LandingPage from './pages/LandingPage';
+import './index.css';
 
 export default function App(){
   return (
