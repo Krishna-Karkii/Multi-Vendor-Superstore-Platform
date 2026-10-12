@@ -5,6 +5,8 @@ from backend.app.core.database import get_user_by_email, get_connection, create_
 from backend.app.schemas.auth import LoginRequest, SignupRequest
 from backend.app.core.security import hash_password, verify_password
 
+from asyncpg.exceptions import UniqueViolationError, ConnectionError
+
 import logging
 
 logger = logging.getLogger()
@@ -48,6 +50,5 @@ async def signup(
             "id": str(user["id"]),
             "email": user["email"]
         }
-    except Exception as e:
-        logger.info(e)
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Signup Failed")
+    except UniqueViolationError:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
